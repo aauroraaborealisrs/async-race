@@ -1,4 +1,3 @@
-console.log("hooo")
-import GarageView from "./view/garage/GarageView";
+import "./style.css";
 
-GarageView.renderMenu();
+console.log("how tf is works")
