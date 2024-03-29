@@ -1,52 +1,46 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
-const EslintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/index.ts'),
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "src/index.html"),
-            filename: "index.html",
-        }),
-        new CleanWebpackPlugin(),
-        new CopyPlugin({
-            patterns: [
-              {
-                from: path.resolve(__dirname, "src/components/view/img"),	//путь к папке, где лежат картинки
-                to: path.resolve(__dirname, "dist/img"),			//куда будут копированы
-              },
-            ],
-          }),
-        new EslintPlugin({ extensions: ['ts'] }),
-
-    ],
-    devServer: {
-        open: true,
-        host: "localhost",
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(jpg|png|svg|jpeg|gif)$/,
-                type: 'asset/resource',
-            },
-            {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"],
-            },
-            {
-                test: /\.ts$/i,
-                use: "ts-loader",
-            },
-        ],
-    },
-    resolve: {
-        alias: {
-          img: path.join(__dirname, "src", "components", "view", "img"),
-        },
-        extensions: ['.ts', '.js']
+  mode: 'production',
+  entry: './src/index.ts',
+  output: {
+    filename: 'bundle.js',
+    path: `${__dirname}/dist`,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+      inject: 'body',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+  },
 };
