@@ -1,12 +1,28 @@
 import { Car } from "../types/Car";
 import { createCarLine } from "./carLineCreator";
 import { postCar } from "../api/postCar";
-import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount";
-
+import { updateGarageHeaderWithCarCount, Pages } from "./updateGarageHeaderWithCarCount";
+import { displayCarsForPage } from './pagination';
 import "./garage.css";
 
 const lastCarId = 5;
 const carsNumber = 0;
+let currentPage = 1;
+
+// async function getTotalPages() {
+//     let totalPages = await Pages();
+//     console.log(totalPages);
+// }
+
+async function getTotalPages(): Promise<number> {
+    let totalPages = await Pages();
+    console.log(totalPages);
+    return totalPages; 
+}
+
+let totalPages = getTotalPages();
+
+
 
 export default class GarageView {
   public static renderMenu(): void {
@@ -49,12 +65,6 @@ export default class GarageView {
       const cars = await response.json();
       this.renderCars(cars);
       console.log(cars);
-      // carsNumber = cars.length;
-      // console.log(carsNumber)
-      // const garageHeader = document.getElementById("garage-header");
-      //  if (garageHeader) {
-      //     garageHeader.textContent = `Garage (${carsNumber})`;
-      //  }
       return cars;
     } catch (error) {
       console.error(
@@ -74,6 +84,7 @@ export default class GarageView {
     }
   }
 
+
   public static addCreateCarHandler(): void {
     const createButton = document.getElementById(
       "create-btn",
@@ -88,7 +99,6 @@ export default class GarageView {
         const carColor = (
           document.getElementById("create-car-color") as HTMLInputElement
         ).value;
-        // const newCar = new Car(carName, carColor, lastCarId++);
         const carContainer = document.getElementById("car-container");
 
         const postCarData = {
@@ -106,6 +116,8 @@ export default class GarageView {
         if (carContainer) {
           const carLine = createCarLine(createdCar);
           carContainer.appendChild(carLine);
+          getTotalPages();
+
         }
       });
     }

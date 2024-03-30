@@ -1,5 +1,10 @@
 import { Car } from "../types/Car";
-import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount";
+import { updateGarageHeaderWithCarCount, Pages } from "./updateGarageHeaderWithCarCount";
+
+async function getTotalPages() {
+  let totalPages = await Pages();
+  console.log(totalPages);
+}
 
 const selectedCarId = null;
 let verifyId: number;
@@ -138,6 +143,7 @@ export function createCarLine(car: Car): HTMLDivElement {
       if (carBlock) {
         carBlock.remove();
         updateGarageHeaderWithCarCount();
+        getTotalPages();
       }
     } catch (error) {
       console.error("Error deleting car:", error);

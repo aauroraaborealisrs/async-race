@@ -8,7 +8,7 @@ async function fetchCarCount(): Promise<number> {
     return cars.length;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
-    return 0; // Возвращаем 0 в случае ошибки
+    return 0;
   }
 }
 
@@ -18,4 +18,10 @@ export async function updateGarageHeaderWithCarCount(): Promise<void> {
   if (garageHeader) {
     garageHeader.textContent = `Garage (${carCount})`;
   }
+}
+
+export async function Pages(): Promise<number> {
+    const carCount = await fetchCarCount();
+    let totalPages = Math.ceil(carCount / 7);
+    return totalPages;
 }
