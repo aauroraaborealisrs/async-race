@@ -1,10 +1,12 @@
 import { Car } from "../types/Car";
 import { createCarLine } from "./carLineCreator";
 import { postCar } from "../api/postCar";
+import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount";
 
 import "./garage.css";
 
 let lastCarId = 5;
+let carsNumber = 0;
 
 export default class GarageView {
   public static renderMenu(): void {
@@ -17,7 +19,7 @@ export default class GarageView {
           <div class="form">
             <form action="" id="create-car">
               <input type="text" id="create-car-name" name="car-name">
-              <input type="color" id="create-car-color" name="car-color" value="#ffffff">
+              <input type="color" id="create-car-color" name="car-color" value="#60A333">
               <input type="submit" value="create" class="btn create-btn" id="create-btn">
             </form>
           </div>
@@ -47,6 +49,12 @@ export default class GarageView {
       const cars = await response.json();
       this.renderCars(cars);
       console.log(cars);
+      // carsNumber = cars.length;
+      // console.log(carsNumber)
+      // const garageHeader = document.getElementById("garage-header");
+      //  if (garageHeader) {
+      //     garageHeader.textContent = `Garage (${carsNumber})`;
+      //  }
       return cars;
     } catch (error) {
       console.error(
@@ -88,9 +96,9 @@ export default class GarageView {
           color: carColor,
         };
 
-
         try {
           var createdCar = await postCar(postCarData);
+          updateGarageHeaderWithCarCount();
         } catch (error) {
           console.error("Error posting car:", error);
         }
@@ -107,4 +115,5 @@ export default class GarageView {
 document.addEventListener("DOMContentLoaded", () => {
   GarageView.addCreateCarHandler();
   GarageView.fetchCarsAndRender();
+  updateGarageHeaderWithCarCount();
 });

@@ -1,4 +1,8 @@
 import { Car } from "../types/Car";
+import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount";
+
+let selectedCarId = null;
+let verifyId: number;
 
 async function deleteCar(carId: number): Promise<void> {
   try {
@@ -43,6 +47,8 @@ export function createCarLine(car: Car): HTMLDivElement {
 
   const carDiv = document.createElement("div");
   carDiv.className = "car";
+  carDiv.id = `car-id-${car.id}`;
+
   carDiv.style.backgroundColor = car.color;
 
   const carNameSpan = document.createElement("div");
@@ -59,7 +65,12 @@ selectButton.addEventListener("click", (event) => {
     event.preventDefault();
     console.log("Select button clicked");
 
-    const selectedCar = { name: car.name, color: car.color };
+    console.log("внизу будет selectedCar ")
+    const selectedCar = { name: car.name, color: car.color, id: car.id };
+    verifyId = selectedCar.id;
+
+    console.log(selectedCar)
+
 
     const updateCarNameInput = document.getElementById("update-car-name") as HTMLInputElement;
     const updateCarColorInput = document.getElementById("update-car-color") as HTMLInputElement;
@@ -68,11 +79,12 @@ selectButton.addEventListener("click", (event) => {
 
 
     const updateButton = document.getElementById("update-btn") as HTMLButtonElement;
-    console.log(updateButton)
     updateButton.disabled = false;
 
     updateButton.addEventListener("click", async (event) => {
      event.preventDefault();
+     updateButton.disabled = true;
+
     
      const updatedCarName = document.getElementById("update-car-name") as HTMLInputElement;
      const updatedCarColor = document.getElementById("update-car-color") as HTMLInputElement;
@@ -81,22 +93,25 @@ selectButton.addEventListener("click", (event) => {
         name: updatedCarName.value,
         color: updatedCarColor.value
      };
+
+     updatedCarName.value = '';
     
-     try {
-        await updateCar(car.id, updatedCarData);
-        console.log(updatedCarData)
+    if (verifyId !== null) {
+        try {
+          await updateCar(verifyId, updatedCarData);
+          console.log("Selected car updated successfully");
 
-        const updatedCarLine = createCarLine({ ...car, ...updatedCarData });
-
-        const oldCarElement = document.getElementById(`car-id-${car.id}`);
-        if (oldCarElement) {
-            oldCarElement.replaceWith(updatedCarLine);
+          const updatedCarLine = createCarLine({ ...car, ...updatedCarData });
+          const oldCarElement = document.getElementById(`car-id-${verifyId}`);
+          if (oldCarElement) {
+              oldCarElement.replaceWith(updatedCarLine);
+          }
+        } catch (error) {
+          console.error("Error updating selected car:", error);
         }
-        console.log("Car updated on the server");
-
-      } catch (error) {
-        console.error("Error updating car:", error);
-     }
+    } else {
+        console.error("No car selected for update");
+    }
     });
 });
 
@@ -112,6 +127,7 @@ selectButton.addEventListener("click", (event) => {
       const carBlock = document.getElementById(`car-id-${car.id}`);
       if (carBlock) {
         carBlock.remove();
+        updateGarageHeaderWithCarCount();
       }
     } catch (error) {
       console.error("Error deleting car:", error);
