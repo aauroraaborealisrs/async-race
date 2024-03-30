@@ -56,27 +56,46 @@ export default class GarageView {
     }
   }
 
-  public static async fetchCarsAndRender(): Promise<void> {
-    try {
-      const response = await fetch("http://127.0.0.1:3000/garage");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  // public static async fetchCarsAndRender(): Promise<void> {
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:3000/garage");
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const cars = await response.json();
+  //     this.renderCars(cars);
+  //     console.log(cars);
+  //     return cars;
+  //   } catch (error) {
+  //     console.error(
+  //       "There has been a problem with your fetch operation:",
+  //       error,
+  //     );
+  //   }
+  // }
+
+  public static async fetchCarsAndRender(page: number = 1, limit: number = 7): Promise<void> {
+      try {
+          const response = await fetch(`http://127.0.0.1:3000/garage?_page=${page}&_limit=${limit}`);
+          if (!response.ok) {
+              throw new Error("Network response was not ok");
+          }
+          const cars = await response.json();
+          this.renderCars(cars);
+          console.log(cars);
+          return cars;
+      } catch (error) {
+          console.error(
+              "There has been a problem with your fetch operation:",
+              error,
+          );
       }
-      const cars = await response.json();
-      this.renderCars(cars);
-      console.log(cars);
-      return cars;
-    } catch (error) {
-      console.error(
-        "There has been a problem with your fetch operation:",
-        error,
-      );
-    }
   }
 
   public static renderCars(cars: Car[]): void {
     const carContainer = document.getElementById("car-container");
     if (carContainer) {
+      carContainer.innerHTML = '';
       cars.forEach((car) => {
         const carLine = createCarLine(car);
         carContainer.appendChild(carLine);
@@ -129,3 +148,72 @@ document.addEventListener("DOMContentLoaded", () => {
   GarageView.fetchCarsAndRender();
   updateGarageHeaderWithCarCount();
 });
+
+
+
+let currentPg = 1; 
+
+function curPageUpdate(currentPg:number){
+  const curPageDisplay = document.getElementById('cur-page');
+if (curPageDisplay){
+  curPageDisplay.textContent = `Page № ${currentPg}`;
+}
+}
+const nextPageButton = document.getElementById('nextPage') as HTMLButtonElement;
+if (nextPageButton) {
+    nextPageButton.addEventListener('click', () => {
+      currentPg++; 
+      GarageView.fetchCarsAndRender(currentPg); 
+      curPageUpdate(currentPg);
+      buttonsState(currentPg);
+    });
+} else {
+    console.error('Element with ID "nextPage" not found');
+}
+
+const previousPageButton = document.getElementById('prevPage') as HTMLButtonElement;
+if (previousPageButton) {
+  previousPageButton.addEventListener('click', () => {
+      currentPg--; 
+        GarageView.fetchCarsAndRender(currentPg); 
+        curPageUpdate(currentPg);
+        buttonsState(currentPg);
+    });
+} else {
+    console.error('Element with ID "nextPage" not found');
+}
+
+
+
+function buttonsState(currentPg:number){
+if (currentPg === 1) {
+    if (previousPageButton) {
+        previousPageButton.disabled = true;
+    }
+    if (nextPageButton) {
+        nextPageButton.disabled = false;
+    }
+} else {
+    (async () => {
+        const totalPagesNumber = await totalPages;
+        if (currentPg === totalPagesNumber) { 
+            if (nextPageButton) {
+                nextPageButton.disabled = true;
+            }
+            if (previousPageButton) {
+                previousPageButton.disabled = false;
+            }
+        } else {
+            if (previousPageButton) {
+                previousPageButton.disabled = false;
+            }
+            if (nextPageButton) {
+                nextPageButton.disabled = false;
+            }
+        }
+    })();
+}
+}
+
+curPageUpdate(currentPg);
+buttonsState(currentPg);
