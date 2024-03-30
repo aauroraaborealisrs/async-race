@@ -1,0 +1,15 @@
+.menu{
+    margin-bottom: 40px;
+}
+
+.car {
+    mask-image: url(../view/img/machine.svg);
+    mask-size: 100% 100%;
+    width: 100px;
+    height: 100px;
+}
+
+.car-line{
+    display: flex;
+    flex-direction: row;
+}

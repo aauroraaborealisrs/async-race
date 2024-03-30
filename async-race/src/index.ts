@@ -1,3 +1,5 @@
 import "./style.css";
 
-console.log("how tf is works")
+import GarageView from "./components/garage/garageView";
+
+GarageView.renderMenu();
