@@ -1,7 +1,7 @@
 import { Car } from "../types/Car";
 import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount";
 
-let selectedCarId = null;
+const selectedCarId = null;
 let verifyId: number;
 
 async function deleteCar(carId: number): Promise<void> {
@@ -20,14 +20,17 @@ async function deleteCar(carId: number): Promise<void> {
   }
 }
 
-async function updateCar(carId: number, updatedCarData: { name: string; color: string }): Promise<void> {
- try {
+async function updateCar(
+  carId: number,
+  updatedCarData: { name: string; color: string },
+): Promise<void> {
+  try {
     const response = await fetch(`http://127.0.0.1:3000/garage/${carId}`, {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedCarData)
+      body: JSON.stringify(updatedCarData),
     });
 
     if (!response.ok) {
@@ -35,9 +38,9 @@ async function updateCar(carId: number, updatedCarData: { name: string; color: s
     }
 
     console.log("Car updated successfully");
- } catch (error) {
+  } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
- }
+  }
 }
 
 export function createCarLine(car: Car): HTMLDivElement {
@@ -61,42 +64,49 @@ export function createCarLine(car: Car): HTMLDivElement {
   selectButton.className = "select-btn button";
   selectButton.textContent = "Select";
 
-selectButton.addEventListener("click", (event) => {
+  selectButton.addEventListener("click", (event) => {
     event.preventDefault();
     console.log("Select button clicked");
 
-    console.log("внизу будет selectedCar ")
+    console.log("внизу будет selectedCar ");
     const selectedCar = { name: car.name, color: car.color, id: car.id };
     verifyId = selectedCar.id;
 
-    console.log(selectedCar)
+    console.log(selectedCar);
 
-
-    const updateCarNameInput = document.getElementById("update-car-name") as HTMLInputElement;
-    const updateCarColorInput = document.getElementById("update-car-color") as HTMLInputElement;
+    const updateCarNameInput = document.getElementById(
+      "update-car-name",
+    ) as HTMLInputElement;
+    const updateCarColorInput = document.getElementById(
+      "update-car-color",
+    ) as HTMLInputElement;
     updateCarNameInput.value = selectedCar.name;
     updateCarColorInput.value = selectedCar.color;
 
-
-    const updateButton = document.getElementById("update-btn") as HTMLButtonElement;
+    const updateButton = document.getElementById(
+      "update-btn",
+    ) as HTMLButtonElement;
     updateButton.disabled = false;
 
     updateButton.addEventListener("click", async (event) => {
-     event.preventDefault();
-     updateButton.disabled = true;
+      event.preventDefault();
+      updateButton.disabled = true;
 
-    
-     const updatedCarName = document.getElementById("update-car-name") as HTMLInputElement;
-     const updatedCarColor = document.getElementById("update-car-color") as HTMLInputElement;
-    
-     const updatedCarData = {
+      const updatedCarName = document.getElementById(
+        "update-car-name",
+      ) as HTMLInputElement;
+      const updatedCarColor = document.getElementById(
+        "update-car-color",
+      ) as HTMLInputElement;
+
+      const updatedCarData = {
         name: updatedCarName.value,
-        color: updatedCarColor.value
-     };
+        color: updatedCarColor.value,
+      };
 
-     updatedCarName.value = '';
-    
-    if (verifyId !== null) {
+      updatedCarName.value = "";
+
+      if (verifyId !== null) {
         try {
           await updateCar(verifyId, updatedCarData);
           console.log("Selected car updated successfully");
@@ -104,16 +114,16 @@ selectButton.addEventListener("click", (event) => {
           const updatedCarLine = createCarLine({ ...car, ...updatedCarData });
           const oldCarElement = document.getElementById(`car-id-${verifyId}`);
           if (oldCarElement) {
-              oldCarElement.replaceWith(updatedCarLine);
+            oldCarElement.replaceWith(updatedCarLine);
           }
         } catch (error) {
           console.error("Error updating selected car:", error);
         }
-    } else {
+      } else {
         console.error("No car selected for update");
-    }
+      }
     });
-});
+  });
 
   const removeButton = document.createElement("button");
   removeButton.className = "remove-btn button";

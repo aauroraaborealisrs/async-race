@@ -5,15 +5,15 @@ import { updateGarageHeaderWithCarCount } from "./updateGarageHeaderWithCarCount
 
 import "./garage.css";
 
-let lastCarId = 5;
-let carsNumber = 0;
+const lastCarId = 5;
+const carsNumber = 0;
 
 export default class GarageView {
   public static renderMenu(): void {
     const menuContainer = document.getElementById("menu-container");
     if (menuContainer) {
       console.log("menuContainer");
-      //я уберу потом этот иннер не ругайся пж(((
+      // я уберу потом этот иннер не ругайся пж(((
       menuContainer.innerHTML = `
         <div class="menu">
           <div class="form">
