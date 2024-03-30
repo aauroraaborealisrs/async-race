@@ -1,18 +1,17 @@
-import {Car} from "../types/Car";
-import { createCarLine } from "./carLineCreator"; 
+import { Car } from "../types/Car";
+import { createCarLine } from "./carLineCreator";
 import { postCar } from "../api/postCar";
 
-import './garage.css';
+import "./garage.css";
 
 let lastCarId = 5;
 
-
 export default class GarageView {
-
- public static renderMenu(): void {
+  public static renderMenu(): void {
     const menuContainer = document.getElementById("menu-container");
     if (menuContainer) {
-      console.log("menuContainer")
+      console.log("menuContainer");
+      //я уберу потом этот иннер не ругайся пж(((
       menuContainer.innerHTML = `
         <div class="menu">
           <div class="form">
@@ -26,7 +25,7 @@ export default class GarageView {
             <form action="" id="update-car">
               <input type="text" id="update-car-name" name="car-name">
               <input type="color" id="update-car-color" name="car-color" value="#ffffff">
-             <input type="submit" value="update" class="btn update-btn btn-disabled" disabled>
+             <input type="submit" id="update-btn" value="update" class="btn update-btn btn-disabled" disabled>
             </form>
           </div>
           <div class="buttons">
@@ -37,91 +36,75 @@ export default class GarageView {
         </div>
       `;
     }
- }
-
- public static async fetchCarsAndRender(): Promise<void> {
-     try {
-       const response = await fetch('http://127.0.0.1:3000/garage');
-       if (!response.ok) {
-         throw new Error('Network response was not ok');
-       }
-       const cars = await response.json();
-       this.renderCars(cars);
-     } catch (error) {
-       console.error('There has been a problem with your fetch operation:', error);
-
-     }
   }
- 
-  public static renderCars(cars: Car[]): void {
-      const carContainer = document.getElementById("car-container");
-      if (carContainer) {
-        cars.forEach(car => {
-          const carLine = createCarLine(car);
-          carContainer.appendChild(carLine);
-        });
+
+  public static async fetchCarsAndRender(): Promise<void> {
+    try {
+      const response = await fetch("http://127.0.0.1:3000/garage");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      const cars = await response.json();
+      this.renderCars(cars);
+      console.log(cars);
+      return cars;
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error,
+      );
+    }
   }
 
- public static addCreateCarHandler(): void {
-   const createButton = document.getElementById("create-btn") as HTMLButtonElement;
-   if (createButton) {
+  public static renderCars(cars: Car[]): void {
+    const carContainer = document.getElementById("car-container");
+    if (carContainer) {
+      cars.forEach((car) => {
+        const carLine = createCarLine(car);
+        carContainer.appendChild(carLine);
+      });
+    }
+  }
+
+  public static addCreateCarHandler(): void {
+    const createButton = document.getElementById(
+      "create-btn",
+    ) as HTMLButtonElement;
+    if (createButton) {
       createButton.addEventListener("click", async (event) => {
-        event.preventDefault(); 
-  
-        const carName = (document.getElementById("create-car-name") as HTMLInputElement).value;
-        const carColor = (document.getElementById("create-car-color") as HTMLInputElement).value;
-        const newCar = new Car(carName, carColor, lastCarId++);
+        event.preventDefault();
+
+        const carName = (
+          document.getElementById("create-car-name") as HTMLInputElement
+        ).value;
+        const carColor = (
+          document.getElementById("create-car-color") as HTMLInputElement
+        ).value;
+        // const newCar = new Car(carName, carColor, lastCarId++);
         const carContainer = document.getElementById("car-container");
 
         const postCarData = {
           name: carName,
-          color: carColor
-      };
+          color: carColor,
+        };
 
-       try {
-              const createdCar = await postCar(postCarData);
-              console.log(createdCar);
-          } catch (error) {
-              console.error('Error posting car:', error);
-          }
 
-    //    try {
-    //     const response = await fetch('http://127.0.0.1:3000/garage', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(postCar)
-    //     });
+        try {
+          var createdCar = await postCar(postCarData);
+        } catch (error) {
+          console.error("Error posting car:", error);
+        }
 
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //     }
-
-    //     const createdCar = await response.json();
-    //     console.log(createdCar);
-
-    // } catch (error) {
-    //     console.error('There has been a problem with your fetch operation:', error);
-    // }
-
-      if (carContainer) {
-        const carLine = createCarLine(newCar);
-        carContainer.appendChild(carLine);
-      }
-
-        console.log(newCar); 
+        if (carContainer) {
+          const carLine = createCarLine(createdCar);
+          carContainer.appendChild(carLine);
+        }
       });
-
-      
-   }
- }
-
-
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
- GarageView.addCreateCarHandler();
- GarageView.fetchCarsAndRender(); 
+  GarageView.addCreateCarHandler();
+  GarageView.fetchCarsAndRender();
 });
