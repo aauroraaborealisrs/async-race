@@ -1,8 +1,11 @@
 import { Car } from "../types/Car";
-import { updateGarageHeaderWithCarCount, Pages } from "./updateGarageHeaderWithCarCount";
+import {
+  updateGarageHeaderWithCarCount,
+  Pages,
+} from "./updateGarageHeaderWithCarCount";
 
 async function getTotalPages() {
-  let totalPages = await Pages();
+  const totalPages = await Pages();
   console.log(totalPages);
 }
 

@@ -21,7 +21,7 @@ export async function updateGarageHeaderWithCarCount(): Promise<void> {
 }
 
 export async function Pages(): Promise<number> {
-    const carCount = await fetchCarCount();
-    let totalPages = Math.ceil(carCount / 7);
-    return totalPages;
+  const carCount = await fetchCarCount();
+  const totalPages = Math.ceil(carCount / 7);
+  return totalPages;
 }
