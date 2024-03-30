@@ -11,6 +11,11 @@
 
 .car-line{
     display: flex;
+    flex-direction: column;
+}
+
+.car-line-horizontal{
+    display: flex;
     flex-direction: row;
 }
 
@@ -23,7 +28,6 @@
 }
 
 #car-container{
-    height: 700px;
     display: flex;
     flex-flow: column nowrap;
     overflow: hidden;
@@ -32,4 +36,21 @@
 #cur-page{
     position: relative;
     z-index: 3;
+}
+
+.flag{
+    background-image: url(../view/img/flag.svg);
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    position: absolute; 
+    right: 0; 
+    padding-right: 50px;
+    margin-top: 25px;
+}
+
+.striped-line{
+    border: 2px dashed black;
+    width: 100%;
+    margin-top: -20px;
 }

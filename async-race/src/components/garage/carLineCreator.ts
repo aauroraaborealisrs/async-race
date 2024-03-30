@@ -56,6 +56,9 @@ export function createCarLine(car: Car): HTMLDivElement {
   carLine.className = "car-line";
   carLine.id = `car-id-${car.id}`;
 
+  const horizontalStuff = document.createElement("div");
+  horizontalStuff.className = "car-line-horizontal";
+
   const carDiv = document.createElement("div");
   carDiv.className = "car";
   carDiv.id = `car-id-${car.id}`;
@@ -74,13 +77,8 @@ export function createCarLine(car: Car): HTMLDivElement {
 
   selectButton.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log("Select button clicked");
-
-    console.log("внизу будет selectedCar ");
     const selectedCar = { name: car.name, color: car.color, id: car.id };
     verifyId = selectedCar.id;
-
-    console.log(selectedCar);
 
     const updateCarNameInput = document.getElementById(
       "update-car-name",
@@ -153,11 +151,20 @@ export function createCarLine(car: Car): HTMLDivElement {
     }
   });
 
-  carLine.appendChild(carDiv);
-  carLine.appendChild(carNameSpan);
-  carLine.appendChild(buttonsPlaceholder);
+  const hr = document.createElement('hr');
+  hr.className = 'striped-line';
+
+  const flagDiv = document.createElement("div");
+  flagDiv.className = "flag";
+
+  carLine.appendChild(horizontalStuff);
+  horizontalStuff.appendChild(carDiv);
+  horizontalStuff.appendChild(carNameSpan);
+  horizontalStuff.appendChild(buttonsPlaceholder);
   buttonsPlaceholder.appendChild(selectButton);
   buttonsPlaceholder.appendChild(removeButton);
+  horizontalStuff.appendChild(flagDiv);
+  carLine.appendChild(hr);
 
   return carLine;
 }
