@@ -54,3 +54,30 @@
     width: 100%;
     margin-top: -20px;
 }
+
+.button{
+    cursor: pointer;
+}
+
+.stop-btn,.start-btn{
+    height: fit-content;
+    width: 30px;
+}
+.start-btn{
+    border: 1px solid green;
+    color: green;
+    padding: 4px 5px;
+}
+
+.stop-btn{
+    border: 1px solid red;
+    color: red;
+    padding-bottom: 5px;
+}
+
+.stop-btn:disabled {
+    background-color: #cccccc; 
+    color: #666666; 
+    border-color: #999999; 
+    cursor: not-allowed; 
+   }

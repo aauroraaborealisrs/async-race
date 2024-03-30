@@ -1,4 +1,7 @@
 import { Car } from "../types/Car";
+import { deleteCar } from "../api/deleteCar";
+import { updateCar } from "../api/updateCar";
+
 import {
   updateGarageHeaderWithCarCount,
   Pages,
@@ -9,47 +12,7 @@ async function getTotalPages() {
   console.log(totalPages);
 }
 
-const selectedCarId = null;
 let verifyId: number;
-
-async function deleteCar(carId: number): Promise<void> {
-  try {
-    const response = await fetch(`http://127.0.0.1:3000/garage/${carId}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    console.log("Car deleted successfully");
-  } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
-  }
-}
-
-async function updateCar(
-  carId: number,
-  updatedCarData: { name: string; color: string },
-): Promise<void> {
-  try {
-    const response = await fetch(`http://127.0.0.1:3000/garage/${carId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedCarData),
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    console.log("Car updated successfully");
-  } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
-  }
-}
 
 export function createCarLine(car: Car): HTMLDivElement {
   const carLine = document.createElement("div");
@@ -62,7 +25,6 @@ export function createCarLine(car: Car): HTMLDivElement {
   const carDiv = document.createElement("div");
   carDiv.className = "car";
   carDiv.id = `car-id-${car.id}`;
-
   carDiv.style.backgroundColor = car.color;
 
   const carNameSpan = document.createElement("div");
@@ -151,13 +113,28 @@ export function createCarLine(car: Car): HTMLDivElement {
     }
   });
 
-  const hr = document.createElement('hr');
-  hr.className = 'striped-line';
+  const statePlaceholder = document.createElement("div");
+  statePlaceholder.className = "state-btn";
+
+  const startButton = document.createElement("button");
+  startButton.className = "start-btn button";
+  startButton.textContent = "▶";
+
+  const stopButton = document.createElement("button");
+  stopButton.className = "stop-btn button";
+  stopButton.textContent = "❚❚";
+  stopButton.disabled = true;
+
+  const hr = document.createElement("hr");
+  hr.className = "striped-line";
 
   const flagDiv = document.createElement("div");
   flagDiv.className = "flag";
 
   carLine.appendChild(horizontalStuff);
+  horizontalStuff.appendChild(statePlaceholder);
+  statePlaceholder.appendChild(startButton);
+  statePlaceholder.appendChild(stopButton);
   horizontalStuff.appendChild(carDiv);
   horizontalStuff.appendChild(carNameSpan);
   horizontalStuff.appendChild(buttonsPlaceholder);

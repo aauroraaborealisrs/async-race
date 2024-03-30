@@ -6,7 +6,8 @@ import {
   Pages,
 } from "./updateGarageHeaderWithCarCount";
 import "./garage.css";
-import { carBrands, carModels, carColors } from "../types//randomCarData";
+import { carBrands, carModels, carColors } from "../types/randomCarData";
+import { buttonsState } from "./buttonsState";
 
 const lastCarId = 5;
 const carsNumber = 0;
@@ -122,34 +123,33 @@ export default class GarageView {
       });
     }
   }
-  
-  
+
   public static addGenerateCarsHandler(): void {
-      const generateButton = document.getElementById("generate-btn") as HTMLButtonElement;
-      if (generateButton) {
-          generateButton.addEventListener("click", async () => {
-            console.log("Generate button clicked"); 
-              for (let i = 0; i < 100; i++) {
-                  const brand = carBrands[Math.floor(Math.random() * carBrands.length)];
-                  const model = carModels[Math.floor(Math.random() * carModels.length)];
-                  const color = carColors[Math.floor(Math.random() * carColors.length)];
-  
-                  const carData = {
-                      name: `${brand} ${model}`,
-                      color: color,
-                  };
-                  const carContainer = document.getElementById("car-container");
-                  
-                  try {
-                      let carToPost = await postCar(carData);
-                      updateGarageHeaderWithCarCount();                      
-                      console.log(`Car ${i + 1} created successfully.`);
-                  } catch (error) {
-                      console.error(`Error creating car ${i + 1}:`, error);
-                  }
-              }
-          });
-      }
+    const generateButton = document.getElementById(
+      "generate-btn",
+    ) as HTMLButtonElement;
+    if (generateButton) {
+      generateButton.addEventListener("click", async () => {
+        for (let i = 0; i < 100; i++) {
+          const brand = carBrands[Math.floor(Math.random() * carBrands.length)];
+          const model = carModels[Math.floor(Math.random() * carModels.length)];
+          const color = carColors[Math.floor(Math.random() * carColors.length)];
+
+          const carData = {
+            name: `${brand} ${model}`,
+            color,
+          };
+
+          try {
+            const carToPost = await postCar(carData);
+            updateGarageHeaderWithCarCount();
+            console.log(`Car ${i + 1} created successfully.`);
+          } catch (error) {
+            console.error(`Error creating car ${i + 1}:`, error);
+          }
+        }
+      });
+    }
   }
 }
 
@@ -157,9 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
   GarageView.addCreateCarHandler();
   GarageView.fetchCarsAndRender();
   updateGarageHeaderWithCarCount();
-  GarageView.addGenerateCarsHandler(); 
+  GarageView.addGenerateCarsHandler();
 });
-
 
 let currentPg = 1;
 
@@ -193,36 +192,6 @@ if (previousPageButton) {
   });
 } else {
   console.error('Element with ID "nextPage" not found');
-}
-
-function buttonsState(currentPg: number) {
-  if (currentPg === 1) {
-    if (previousPageButton) {
-      previousPageButton.disabled = true;
-    }
-    if (nextPageButton) {
-      nextPageButton.disabled = false;
-    }
-  } else {
-    (async () => {
-      const totalPagesNumber = await totalPages;
-      if (currentPg === totalPagesNumber) {
-        if (nextPageButton) {
-          nextPageButton.disabled = true;
-        }
-        if (previousPageButton) {
-          previousPageButton.disabled = false;
-        }
-      } else {
-        if (previousPageButton) {
-          previousPageButton.disabled = false;
-        }
-        if (nextPageButton) {
-          nextPageButton.disabled = false;
-        }
-      }
-    })();
-  }
 }
 
 curPageUpdate(currentPg);
