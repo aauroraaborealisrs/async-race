@@ -2,6 +2,8 @@ import { Car } from "../types/Car";
 import { deleteCar } from "../api/deleteCar";
 import { updateCar } from "../api/updateCar";
 import { animation } from "./animation";
+import { stopButtonHandler } from "./stopButton";
+
 
 import {
   updateGarageHeaderWithCarCount,
@@ -27,6 +29,16 @@ export function createCarLine(car: Car): HTMLDivElement {
   carDiv.className = "car";
   carDiv.id = `car-id-div-${car.id}`;
   carDiv.style.backgroundColor = car.color;
+
+  // if (carDiv) {
+  //     // const currentPosition = carDiv.offsetLeft;
+  //     // carDiv.setAttribute('data-initial-position', currentPosition.toString());
+  //     const position = {
+  //       top: (carDiv as HTMLElement).offsetTop,
+  //       left: (carDiv as HTMLElement).offsetLeft
+  //     };
+  //     carDiv.setAttribute('data-position', JSON.stringify(position));
+  // }
 
   const carNameSpan = document.createElement("div");
   carNameSpan.textContent = car.name;
@@ -131,6 +143,12 @@ export function createCarLine(car: Car): HTMLDivElement {
   stopButton.textContent = "❚❚";
   stopButton.disabled = true;
 
+
+  stopButton.addEventListener("click", () => {
+    stopButtonHandler(car.id);
+    stopButton.disabled = true;
+});
+
   const hr = document.createElement("hr");
   hr.className = "striped-line";
 
@@ -158,7 +176,7 @@ export function createCarLine(car: Car): HTMLDivElement {
   buttonsPlaceholder.appendChild(selectButton);
   buttonsPlaceholder.appendChild(removeButton);
   horizontalStuff.appendChild(flagDiv);
-  carLine.appendChild(hr);
+  carLine.appendChild(hr); 
 
   return carLine;
 }

@@ -8,6 +8,7 @@ import {
 import "./garage.css";
 import { carBrands, carModels, carColors } from "../types/randomCarData";
 import { buttonsState } from "./buttonsState";
+import { startRaceListener } from "../race/startRace";
 
 const lastCarId = 5;
 const carsNumber = 0;
@@ -31,20 +32,20 @@ export default class GarageView {
             <form action="" id="create-car">
               <input type="text" id="create-car-name" name="car-name">
               <input type="color" id="create-car-color" name="car-color" value="#60A333">
-              <input type="submit" value="create" class="btn create-btn" id="create-btn">
+              <input type="submit" value="create" class="btn create-btn button" id="create-btn">
             </form>
           </div>
           <div class="form">
             <form action="" id="update-car">
               <input type="text" id="update-car-name" name="car-name">
               <input type="color" id="update-car-color" name="car-color" value="#ffffff">
-             <input type="submit" id="update-btn" value="update" class="btn update-btn btn-disabled" disabled>
+             <input type="submit" id="update-btn" value="update" class="btn update-btn button btn-disabled" disabled>
             </form>
           </div>
           <div class="buttons">
-            <button class="btn race-btn">race</button>
-            <button class="btn reset-btn btn-disabled" disabled>reset</button>
-            <button class="btn generate-btn" id="generate-btn">generate cars</button>
+            <button class="btn race-btn button" id="race-btn">race</button>
+            <button class="btn reset-btn btn-disabled button" disabled>reset</button>
+            <button class="btn generate-btn button" id="generate-btn">generate cars</button>
           </div>
         </div>
       `;
@@ -154,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   GarageView.fetchCarsAndRender();
   updateGarageHeaderWithCarCount();
   GarageView.addGenerateCarsHandler();
+  startRaceListener();
 });
 
 let currentPg = 1;
@@ -171,6 +173,8 @@ if (nextPageButton) {
     GarageView.fetchCarsAndRender(currentPg);
     curPageUpdate(currentPg);
     buttonsState(currentPg);
+    const raceButton = document.getElementById('race-btn') as HTMLButtonElement;
+    raceButton.disabled = false;
   });
 } else {
   console.error('Element with ID "nextPage" not found');
@@ -185,6 +189,8 @@ if (previousPageButton) {
     GarageView.fetchCarsAndRender(currentPg);
     curPageUpdate(currentPg);
     buttonsState(currentPg);
+    const raceButton = document.getElementById('race-btn') as HTMLButtonElement;
+    raceButton.disabled = false;
   });
 } else {
   console.error('Element with ID "nextPage" not found');
