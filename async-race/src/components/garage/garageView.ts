@@ -173,7 +173,7 @@ if (nextPageButton) {
     GarageView.fetchCarsAndRender(currentPg);
     curPageUpdate(currentPg);
     buttonsState(currentPg);
-    const raceButton = document.getElementById('race-btn') as HTMLButtonElement;
+    const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
     raceButton.disabled = false;
   });
 } else {
@@ -189,7 +189,7 @@ if (previousPageButton) {
     GarageView.fetchCarsAndRender(currentPg);
     curPageUpdate(currentPg);
     buttonsState(currentPg);
-    const raceButton = document.getElementById('race-btn') as HTMLButtonElement;
+    const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
     raceButton.disabled = false;
   });
 } else {

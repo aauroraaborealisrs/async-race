@@ -18,14 +18,11 @@
 //     }
 // }
 
-import {startAnimation} from "../garage/startAnimation"
+import { startAnimation } from "./startAnimation";
 
 export function stopButtonHandler(carId: number) {
-
-    const carElement = document.getElementById(`car-id-div-${carId}`);
-    if (carElement) {
-        console.log("я буду ставить")
-    }
-    
-
+  const carElement = document.getElementById(`car-id-div-${carId}`);
+  if (carElement) {
+    console.log("я буду ставить");
+  }
 }

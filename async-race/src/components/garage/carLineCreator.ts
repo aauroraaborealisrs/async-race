@@ -4,7 +4,6 @@ import { updateCar } from "../api/updateCar";
 import { animation } from "./animation";
 import { stopButtonHandler } from "./stopButton";
 
-
 import {
   updateGarageHeaderWithCarCount,
   Pages,
@@ -134,20 +133,21 @@ export function createCarLine(car: Car): HTMLDivElement {
   startButton.textContent = "▶";
   // startButton.id = `${car.id}`;
   startButton.addEventListener("click", () => {
-      animation(car.id, "started");
-      stopButton.disabled = false;
-      startButton.disabled = true;
+    animation(car.id, "started");
+    stopButton.disabled = false;
+    startButton.disabled = true;
   });
   const stopButton = document.createElement("button");
   stopButton.className = "stop-btn button";
   stopButton.textContent = "❚❚";
   stopButton.disabled = true;
 
+  stopButton.id = `stop-btn-${car.id}`;
 
-  stopButton.addEventListener("click", () => {
-    stopButtonHandler(car.id);
-    stopButton.disabled = true;
-});
+  // stopButton.addEventListener("click", () => {
+  //   stopButtonHandler(car.id);
+  //   stopButton.disabled = true;
+  // });
 
   const hr = document.createElement("hr");
   hr.className = "striped-line";
@@ -155,15 +155,15 @@ export function createCarLine(car: Car): HTMLDivElement {
   const flagDiv = document.createElement("div");
   flagDiv.className = "flag";
 
-  const carContainer = document.getElementById('car-container');
-  
+  const carContainer = document.getElementById("car-container");
+
   if (carContainer) {
-      const childCount = carContainer.children.length;
-        if (childCount >= 7) {
-        flagDiv.style.display = 'none'; //.style.visibility = 'hidden';
-      } else {
-          flagDiv.style.display = 'block'; //.style.visibility = 'visible';
-      }
+    const childCount = carContainer.children.length;
+    if (childCount >= 7) {
+      flagDiv.style.display = "none"; // .style.visibility = 'hidden';
+    } else {
+      flagDiv.style.display = "block"; // .style.visibility = 'visible';
+    }
   }
 
   carLine.appendChild(horizontalStuff);
@@ -176,7 +176,7 @@ export function createCarLine(car: Car): HTMLDivElement {
   buttonsPlaceholder.appendChild(selectButton);
   buttonsPlaceholder.appendChild(removeButton);
   horizontalStuff.appendChild(flagDiv);
-  carLine.appendChild(hr); 
+  carLine.appendChild(hr);
 
   return carLine;
 }
