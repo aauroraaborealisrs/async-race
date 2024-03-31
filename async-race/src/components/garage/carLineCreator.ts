@@ -1,6 +1,7 @@
 import { Car } from "../types/Car";
 import { deleteCar } from "../api/deleteCar";
 import { updateCar } from "../api/updateCar";
+import { animation } from "./animation";
 
 import {
   updateGarageHeaderWithCarCount,
@@ -24,7 +25,7 @@ export function createCarLine(car: Car): HTMLDivElement {
 
   const carDiv = document.createElement("div");
   carDiv.className = "car";
-  carDiv.id = `car-id-${car.id}`;
+  carDiv.id = `car-id-div-${car.id}`;
   carDiv.style.backgroundColor = car.color;
 
   const carNameSpan = document.createElement("div");
@@ -119,7 +120,12 @@ export function createCarLine(car: Car): HTMLDivElement {
   const startButton = document.createElement("button");
   startButton.className = "start-btn button";
   startButton.textContent = "▶";
-
+  // startButton.id = `${car.id}`;
+  startButton.addEventListener("click", () => {
+      animation(car.id, "started");
+      stopButton.disabled = false;
+      startButton.disabled = true;
+  });
   const stopButton = document.createElement("button");
   stopButton.className = "stop-btn button";
   stopButton.textContent = "❚❚";
@@ -130,6 +136,17 @@ export function createCarLine(car: Car): HTMLDivElement {
 
   const flagDiv = document.createElement("div");
   flagDiv.className = "flag";
+
+  const carContainer = document.getElementById('car-container');
+  
+  if (carContainer) {
+      const childCount = carContainer.children.length;
+        if (childCount >= 7) {
+        flagDiv.style.display = 'none'; //.style.visibility = 'hidden';
+      } else {
+          flagDiv.style.display = 'block'; //.style.visibility = 'visible';
+      }
+  }
 
   carLine.appendChild(horizontalStuff);
   horizontalStuff.appendChild(statePlaceholder);

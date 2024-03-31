@@ -15,7 +15,6 @@ const currentPage = 1;
 
 async function getTotalPages(): Promise<number> {
   const totalPages = await Pages();
-  console.log(totalPages);
   return totalPages;
 }
 
@@ -25,8 +24,7 @@ export default class GarageView {
   public static renderMenu(): void {
     const menuContainer = document.getElementById("menu-container");
     if (menuContainer) {
-      console.log("menuContainer");
-      // я уберу потом этот иннер не ругайся пж(((
+      // я уберу потом этот иннер не ругай пж(((
       menuContainer.innerHTML = `
         <div class="menu">
           <div class="form">
@@ -66,7 +64,6 @@ export default class GarageView {
       }
       const cars = await response.json();
       this.renderCars(cars);
-      console.log(cars);
       return cars;
     } catch (error) {
       console.error(
@@ -143,7 +140,6 @@ export default class GarageView {
           try {
             const carToPost = await postCar(carData);
             updateGarageHeaderWithCarCount();
-            console.log(`Car ${i + 1} created successfully.`);
           } catch (error) {
             console.error(`Error creating car ${i + 1}:`, error);
           }
