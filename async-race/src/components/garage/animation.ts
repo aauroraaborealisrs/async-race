@@ -87,8 +87,8 @@ export async function animation(carId: number, status: string, results: WinnerCa
 
 
 let winner = results[0].id;
-let winnerTime = results[0].res;
-
+// let winnerTime = results[0].res;
+let winnerTime = parseFloat((results[0].res / 1000).toFixed(3));
 let winnerSend = {
  id: winner,
  time: winnerTime
