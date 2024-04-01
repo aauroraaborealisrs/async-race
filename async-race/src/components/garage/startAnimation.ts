@@ -10,7 +10,7 @@ export function startAnimation(
 
     const carElement = document.getElementById(`car-id-div-${carId}`);
     if (!carElement) {
-      console.error(`Element with ID 'car-id-div-${carId}' not found`);
+      console.log(`Element with ID 'car-id-div-${carId}' not found`);
       reject(-1);
       return;
     }

@@ -1,7 +1,3 @@
-.menu{
-    margin-bottom: 40px;
-}
-
 .car {
     mask-image: url(../view/img/machine.svg);
     mask-size: 100% 100%;
@@ -22,20 +18,29 @@
 
 .switch-button{
     background-color: rgb(90, 49, 161);
+    font-weight: 700;
+    border-radius: 5px;
+    color: white;
     cursor: pointer;
     padding: 10px 20px;
     position: relative;
     z-index: 3;
 }
 
+.switch-button:hover{
+    background-color:darkmagenta;
+
+}
+
 #car-container{
     display: flex;
-    height: 640px;
+    height: 638px;
     flex-flow: column nowrap;
     overflow: hidden;
 }
 
 #cur-page{
+    padding-top: 10px;
     position: relative;
     z-index: 3;
 }
@@ -59,6 +64,10 @@
 
 .button{
     cursor: pointer;
+}
+
+.buttons{
+    margin-top: 15px;
 }
 
 .stop-btn,.start-btn{
@@ -90,6 +99,24 @@
     color: #666666; 
     border-color: #999999; 
     cursor: not-allowed; 
+}
+
+.page-switcher{
+    margin-top: 20px;
+}
+
+.race-btn{
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    font-weight: 700;
+    font: 1em;
+    border-radius: 5px;
+}
+
+.race-btn:disabled {
+    background-color:#666666;
+    cursor: not-allowed;
 }
 
 .red{

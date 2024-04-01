@@ -12,7 +12,7 @@ export async function animation(carId: number, status: string) {
     });
 
     if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
+      console.log(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
@@ -34,26 +34,26 @@ export async function animation(carId: number, status: string) {
         },
       );
 
-      if (!driveResponse.ok) {
+    if (driveResponse.status === 404 || driveResponse.status === 429) {
+        console.log(`Это баг сервака в дс говорили не снимайте пж(( status: ${driveResponse.status}`);
+    }
+      if (driveResponse.status  === 500) {
         const broken = document.getElementById(`car-id-div-${carId}`);
         if (broken) {
-          //   broken.style.backgroundColor = "red";
-          // broken.classList.add("red");
           if (broken.style.left != "0px") {
-            // Если условие выполняется, добавляем класс
             broken.classList.add("red");
           }
         }
 
         cancelAnimation();
-        // console.error(
-        //   `Drive mode switch failed! status: ${driveResponse.status}`,
-        // );
+        console.log(
+          `У вас двигатель умер. status: ${driveResponse.status}`,
+        );
       }
     }
 
     return data;
   } catch (error) {
-    // console.error("There was a problem with your fetch operation:", error);
+    console.log("There was a problem with your fetch operation:", error);
   }
 }

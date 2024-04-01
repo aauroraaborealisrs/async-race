@@ -83,10 +83,10 @@ export function createCarLine(car: Car): HTMLDivElement {
             oldCarElement.replaceWith(updatedCarLine);
           }
         } catch (error) {
-          console.error("Error updating selected car:", error);
+          console.log("Error updating selected car:", error);
         }
       } else {
-        console.error("No car selected for update");
+        console.log("No car selected for update");
       }
     });
   });
@@ -107,7 +107,7 @@ export function createCarLine(car: Car): HTMLDivElement {
         getTotalPages();
       }
     } catch (error) {
-      console.error("Error deleting car:", error);
+      console.log("Error deleting car:", error);
     }
   });
 

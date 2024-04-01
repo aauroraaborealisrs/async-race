@@ -62,13 +62,13 @@ export default class GarageView {
         `http://127.0.0.1:3000/garage?_page=${page}&_limit=${limit}`,
       );
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        console.log("Network response was not ok");
       }
       const cars = await response.json();
       this.renderCars(cars);
       return cars;
     } catch (error) {
-      console.error(
+      console.log(
         "There has been a problem with your fetch operation:",
         error,
       );
@@ -111,7 +111,7 @@ export default class GarageView {
           var createdCar = await postCar(postCarData);
           updateGarageHeaderWithCarCount();
         } catch (error) {
-          console.error("Error posting car:", error);
+          console.log("Error posting car:", error);
         }
 
         if (carContainer) {
@@ -143,7 +143,7 @@ export default class GarageView {
             const carToPost = await postCar(carData);
             updateGarageHeaderWithCarCount();
           } catch (error) {
-            console.error(`Error creating car ${i + 1}:`, error);
+            console.log(`Error creating car ${i + 1}:`, error);
           }
         }
       });
@@ -180,7 +180,7 @@ if (nextPageButton) {
     raceButton.disabled = false;
   });
 } else {
-  console.error('Element with ID "nextPage" not found');
+  console.log('Element with ID "nextPage" not found');
 }
 
 const previousPageButton = document.getElementById(
@@ -196,7 +196,7 @@ if (previousPageButton) {
     raceButton.disabled = false;
   });
 } else {
-  console.error('Element with ID "nextPage" not found');
+  console.log('Element with ID "nextPage" not found');
 }
 
 curPageUpdate(currentPg);

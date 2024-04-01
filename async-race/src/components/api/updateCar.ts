@@ -12,11 +12,9 @@ export async function updateCar(
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.log("Network response was not ok");
     }
-
-    console.log("Car updated successfully");
   } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
+    console.log("There has been a problem with your fetch operation:", error);
   }
 }

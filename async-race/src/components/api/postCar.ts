@@ -9,14 +9,12 @@ export async function postCar(postCar: any): Promise<any> {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.log("Network response was not ok");
     }
 
     const createdCar = await response.json();
-    console.log(createdCar);
     return createdCar;
   } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
-    throw error;
+    console.log("There has been a problem with your fetch operation:", error);
   }
 }

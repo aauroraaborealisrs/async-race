@@ -5,9 +5,9 @@ export async function deleteCar(carId: number): Promise<void> {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.log("Network response was not ok");
     }
   } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
+    console.log("There has been a problem with your fetch operation:", error);
   }
 }
