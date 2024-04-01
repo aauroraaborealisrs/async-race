@@ -9,6 +9,7 @@ import "./garage.css";
 import { carBrands, carModels, carColors } from "../types/randomCarData";
 import { buttonsState } from "./buttonsState";
 import { startRaceListener } from "../race/startRace";
+import { resetButtonHandler } from "./resetButton";
 
 const lastCarId = 5;
 const carsNumber = 0;
@@ -44,7 +45,7 @@ export default class GarageView {
           </div>
           <div class="buttons">
             <button class="btn race-btn button" id="race-btn">race</button>
-            <button class="btn reset-btn btn-disabled button" disabled>reset</button>
+            <button class="btn reset-btn btn-disabled button" id="reset-btn" disabled>reset</button>
             <button class="btn generate-btn button" id="generate-btn">generate cars</button>
           </div>
         </div>
@@ -156,6 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateGarageHeaderWithCarCount();
   GarageView.addGenerateCarsHandler();
   startRaceListener();
+  const resetButton = document.getElementById("reset-btn");
+  resetButton?.addEventListener("click", resetButtonHandler);
 });
 
 let currentPg = 1;

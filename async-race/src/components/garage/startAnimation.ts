@@ -16,6 +16,26 @@ export function startAnimation(
     }
 
     const startPosition = carElement.offsetLeft;
+    const stopBtn = document.getElementById(
+      `stop-btn-${carId}`,
+    ) as HTMLButtonElement;
+    const startBtn = document.getElementById(
+      `start-btn-${carId}`,
+    ) as HTMLButtonElement;
+    const carDiv = document.getElementById(
+      `car-id-div-${carId}`,
+    ) as HTMLElement;
+
+    if (stopBtn) {
+      stopBtn.addEventListener("click", () => {
+        cancelAnimation();
+        carElement.style.left = `0px`;
+        stopBtn.disabled = true;
+        startBtn.disabled = false;
+        carDiv.classList.remove("red");
+      });
+    }
+
     const screenWidth = window.innerWidth;
     const endPosition = screenWidth - 200;
     const speed = (endPosition - startPosition) / animationTime;
@@ -26,7 +46,6 @@ export function startAnimation(
       carElement.style.left = `${newPosition}px`;
 
       if (newPosition >= endPosition) {
-        console.log(elapsedTime);
         resolve(elapsedTime);
       } else {
         animationId = requestAnimationFrame(updatePosition);
@@ -41,7 +60,6 @@ export function startAnimation(
     if (animationId !== null) {
       cancelAnimationFrame(animationId);
       animationId = null;
-      console.log("Animation cancelled");
     }
   };
 

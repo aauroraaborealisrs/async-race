@@ -12,7 +12,7 @@ export async function animation(carId: number, status: string) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      //   throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
@@ -22,13 +22,6 @@ export async function animation(carId: number, status: string) {
       distance,
       velocity,
     );
-
-    const stopBtn = document.getElementById(`stop-btn-${carId}`) as HTMLButtonElement;
-    if(stopBtn){
-    stopBtn.addEventListener("click", () => {
-      cancelAnimation();
-      stopBtn.disabled = true;
-    });};
 
     if (response.ok) {
       const driveResponse = await fetch(
@@ -44,18 +37,23 @@ export async function animation(carId: number, status: string) {
       if (!driveResponse.ok) {
         const broken = document.getElementById(`car-id-div-${carId}`);
         if (broken) {
-          broken.style.backgroundColor = "red";
+          //   broken.style.backgroundColor = "red";
+          // broken.classList.add("red");
+          if (broken.style.left != "0px") {
+            // Если условие выполняется, добавляем класс
+            broken.classList.add("red");
+          }
         }
 
         cancelAnimation();
-        console.error(
-          `Drive mode switch failed! status: ${driveResponse.status}`,
-        );
+        // console.error(
+        //   `Drive mode switch failed! status: ${driveResponse.status}`,
+        // );
       }
     }
 
     return data;
   } catch (error) {
-    console.error("There was a problem with your fetch operation:", error);
+    // console.error("There was a problem with your fetch operation:", error);
   }
 }

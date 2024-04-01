@@ -91,3 +91,7 @@
     border-color: #999999; 
     cursor: not-allowed; 
 }
+
+.red{
+    background-color: black !important;
+}

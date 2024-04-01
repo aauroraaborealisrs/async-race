@@ -7,7 +7,6 @@ const previousPageButton = document.getElementById(
 
 async function getTotalPages(): Promise<number> {
   const totalPages = await Pages();
-  console.log(totalPages);
   return totalPages;
 }
 

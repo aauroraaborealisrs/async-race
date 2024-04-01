@@ -2,7 +2,6 @@ import { Car } from "../types/Car";
 import { deleteCar } from "../api/deleteCar";
 import { updateCar } from "../api/updateCar";
 import { animation } from "./animation";
-import { stopButtonHandler } from "./stopButton";
 
 import {
   updateGarageHeaderWithCarCount,
@@ -11,7 +10,6 @@ import {
 
 async function getTotalPages() {
   const totalPages = await Pages();
-  console.log(totalPages);
 }
 
 let verifyId: number;
@@ -28,16 +26,6 @@ export function createCarLine(car: Car): HTMLDivElement {
   carDiv.className = "car";
   carDiv.id = `car-id-div-${car.id}`;
   carDiv.style.backgroundColor = car.color;
-
-  // if (carDiv) {
-  //     // const currentPosition = carDiv.offsetLeft;
-  //     // carDiv.setAttribute('data-initial-position', currentPosition.toString());
-  //     const position = {
-  //       top: (carDiv as HTMLElement).offsetTop,
-  //       left: (carDiv as HTMLElement).offsetLeft
-  //     };
-  //     carDiv.setAttribute('data-position', JSON.stringify(position));
-  // }
 
   const carNameSpan = document.createElement("div");
   carNameSpan.textContent = car.name;
@@ -89,8 +77,6 @@ export function createCarLine(car: Car): HTMLDivElement {
       if (verifyId !== null) {
         try {
           await updateCar(verifyId, updatedCarData);
-          console.log("Selected car updated successfully");
-
           const updatedCarLine = createCarLine({ ...car, ...updatedCarData });
           const oldCarElement = document.getElementById(`car-id-${verifyId}`);
           if (oldCarElement) {
@@ -131,7 +117,7 @@ export function createCarLine(car: Car): HTMLDivElement {
   const startButton = document.createElement("button");
   startButton.className = "start-btn button";
   startButton.textContent = "▶";
-  // startButton.id = `${car.id}`;
+  startButton.id = `start-btn-${car.id}`;
   startButton.addEventListener("click", () => {
     animation(car.id, "started");
     stopButton.disabled = false;
@@ -141,13 +127,7 @@ export function createCarLine(car: Car): HTMLDivElement {
   stopButton.className = "stop-btn button";
   stopButton.textContent = "❚❚";
   stopButton.disabled = true;
-
   stopButton.id = `stop-btn-${car.id}`;
-
-  // stopButton.addEventListener("click", () => {
-  //   stopButtonHandler(car.id);
-  //   stopButton.disabled = true;
-  // });
 
   const hr = document.createElement("hr");
   hr.className = "striped-line";
