@@ -114,12 +114,19 @@ export function createCarLine(car: Car): HTMLDivElement {
   const statePlaceholder = document.createElement("div");
   statePlaceholder.className = "state-btn";
 
+interface WinnerCandidate {
+ res: number;
+ id: number;
+}
+  let  results: WinnerCandidate[] = [];
+
+
   const startButton = document.createElement("button");
   startButton.className = "start-btn button";
   startButton.textContent = "▶";
   startButton.id = `start-btn-${car.id}`;
   startButton.addEventListener("click", () => {
-    animation(car.id, "started");
+    animation(car.id, "started", results);
     stopButton.disabled = false;
     startButton.disabled = true;
   });

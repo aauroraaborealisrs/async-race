@@ -1,4 +1,5 @@
 import { animation } from "../garage/animation";
+import { showWinner } from "./showWinner";
 
 export function startRaceListener() {
   const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
@@ -7,7 +8,12 @@ export function startRaceListener() {
   }
 }
 
-function startRace() {
+interface WinnerCandidate {
+  res: number;
+  id: number;
+ }
+
+async function startRace() {
   const resetButton = document.getElementById("reset-btn") as HTMLButtonElement;
   resetButton.disabled = false;
 
@@ -29,9 +35,20 @@ function startRace() {
     button.disabled = false;
   });
 
+  let results: WinnerCandidate[] = [];
+  let winners: WinnerCandidate [] = [];
+  let finalWinner: WinnerCandidate;
+
   const carElements = document.querySelectorAll('[id^="car-id-div-"]');
-  carElements.forEach((carElement) => {
+  carElements.forEach(async (carElement) => {
     const carId = parseInt(carElement.id.replace("car-id-div-", ""), 10);
-    animation(carId, "started");
+    const winnerData = await animation(carId, "started", results);
+    const winner = { id: winnerData?.id, res: winnerData?.time } as WinnerCandidate
+    winners.push(winner);
+    if (winners.length === 1){
+      finalWinner = winners[0];
+      // console.log(finalWinner);
+      showWinner(finalWinner);
+    }
   });
 }

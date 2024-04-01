@@ -2,7 +2,11 @@ export function resetButtonHandler() {
   const carElements = document.querySelectorAll('[id^="stop-btn-"]');
   const raceBtn = document.getElementById("race-btn") as HTMLButtonElement;
   const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement;
+  const winnerMiniModal = document.querySelector(".currentWin");
 
+  if (winnerMiniModal) {
+      winnerMiniModal.remove();
+  }
   raceBtn.disabled = false;
   resetBtn.disabled = true;
 

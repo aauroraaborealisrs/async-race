@@ -46,7 +46,11 @@ export function startAnimation(
       carElement.style.left = `${newPosition}px`;
 
       if (newPosition >= endPosition) {
-        resolve(elapsedTime);
+        if (!carElement.classList.contains('red')){
+          resolve(elapsedTime);
+        }
+        // resolve(elapsedTime);
+        // console.log(elapsedTime)
       } else {
         animationId = requestAnimationFrame(updatePosition);
       }
