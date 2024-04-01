@@ -1,29 +1,5 @@
-// export async function getWinners(page:number, sort: string, order: string) {
-//     try {
-//         // const response = await fetch('http://127.0.0.1:3000/winners');
-//         // let page = 1;
-//         // const response = await fetch(`http://127.0.0.1:3000/winners?_page=${page}&_limit=10`);
-//         const response = await fetch(`http://127.0.0.1:3000/winners?_page=${page}&_limit=10&_sort=${sort}&_order=${order}`);
-
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-//         const data = await response.json();
-//         displayWinners(data);
-
-//         const totalCount = response.headers.get('X-Total-Count');
-//         if (totalCount) {
-//             // console.log(`Total number of records: ${totalCount}`);
-//         }
-//     } catch (error) {
-//         console.log('Failed to fetch winners data:', error);
-//     }
-// }
-
 export async function getWinners(page: number, sort: string = '', order: string = '') {
     try {
-        // Создаем строку запроса с параметрами сортировки, если они указаны
         let queryParams = `_page=${page}&_limit=10`;
         if (sort) {
             queryParams += `&_sort=${sort}`;
@@ -42,7 +18,10 @@ export async function getWinners(page: number, sort: string = '', order: string 
 
         const totalCount = response.headers.get('X-Total-Count');
         if (totalCount) {
-            // console.log(`Total number of records: ${totalCount}`);
+            const head = document.getElementById('header-win');
+            if (head) {
+                head.textContent = ` Winners (${totalCount}), page ${page}`;
+            }
         }
     } catch (error) {
         console.log('Failed to fetch winners data:', error);
@@ -53,12 +32,12 @@ async function fetchCarDetailsById(id: number): Promise<{ name: string, color: s
     try {
         const response = await fetch(`http://127.0.0.1:3000/garage/${id}`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.log(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         return { name: data.name, color: data.color };
     } catch (error) {
-        console.error('Failed to fetch car details:', error);
+        console.log('Failed to fetch car details:', error);
         throw error; 
     }
 }
@@ -75,6 +54,7 @@ async function displayWinners(winners: any[]) {
 
     const header = document.createElement('h2');
     header.textContent = 'Winners';
+    header.setAttribute("id", "header-win");
     modalContent.appendChild(header);
 
     const winHeader = document.createElement('div');
@@ -133,34 +113,33 @@ async function displayWinners(winners: any[]) {
     for (const [index, winner] of winners.entries()) {
         const li = document.createElement('li');
         li.classList.add('win-row');
-    
+
         try {
             const { name, color } = await fetchCarDetailsById(winner.id);
     
-            // Создаем div для номера
-            const numberDiv = document.createElement('div');
-            numberDiv.textContent = `${index + 1}`;
-            // li.appendChild(numberDiv);
-            numberCol.appendChild(numberDiv);
+            var page = 1;
 
+            const head = document.getElementById('header-win');
+            if (head && head.textContent) {
+                const pageMatch = head.textContent.match(/page (\d+)/);
+                var page = pageMatch ? parseInt(pageMatch[1], 10) : 1; 
+            }
+
+            const position = (page - 1) * 10 + index + 1;
+            const numberDiv = document.createElement('div');
+            numberDiv.textContent = `${position}`; 
+            numberCol.appendChild(numberDiv);
     
-            // Создаем div для имени
             const nameDiv = document.createElement('div');
             nameDiv.textContent = `${name}`;
-            // li.appendChild(nameDiv);
             nameCol.appendChild(nameDiv);
             
-    
-            // Создаем div для количества побед
             const winsDiv = document.createElement('div');
             winsDiv.textContent = `${winner.wins}`;
-            // li.appendChild(winsDiv);
             winsCol.appendChild(winsDiv);
     
-            // Создаем div для времени
             const timeDiv = document.createElement('div');
             timeDiv.textContent = `${winner.time} sec`;
-            // li.appendChild(timeDiv);
             timesCol.appendChild(timeDiv);
         
     
@@ -168,7 +147,6 @@ async function displayWinners(winners: any[]) {
             carImage.classList.add("winCarImage");
             carImage.style.backgroundColor = `${(color)}`;
 
-            // li.appendChild(carImage);
             carCol.appendChild(carImage);
 
         } catch (error) {

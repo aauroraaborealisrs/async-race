@@ -42,7 +42,7 @@
 #cur-page{
     padding-top: 10px;
     position: relative;
-    z-index: 3;
+    /* z-index: 3; */
 }
 
 .flag{
@@ -64,6 +64,7 @@
 
 .button{
     cursor: pointer;
+    margin: 0 5px;
 }
 
 .buttons{
@@ -118,7 +119,17 @@
     background-color:#666666;
     cursor: not-allowed;
 }
-
+/* 
 .red{
     background-color: black !important;
+} */
+
+@keyframes blink {
+    0% { background-color: black; }
+    50% { background-color: red; }
+    100% { background-color: black; }
+}
+
+.red {
+    animation: blink 1s infinite;
 }

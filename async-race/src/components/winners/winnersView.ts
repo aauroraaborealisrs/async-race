@@ -27,10 +27,9 @@ export default function winnersView() {
       closeModal();
     };
   }
-  const h2 = document.createElement("h2");
-  h2.textContent = "Winners";
-
-  modalContent.appendChild(h2);
+  // const h2 = document.createElement("h2");
+  // h2.classList.add('header-win');
+  // modalContent.appendChild(h2);
   modal.appendChild(modalContent);
 
   document.body.appendChild(modal);
