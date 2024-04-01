@@ -18,23 +18,20 @@ async function fetchCarNameById(id: number): Promise<string> {
 }
 
 export async function showWinner(winner: WinnerCandidate) {
-    
+
     const nextButton = document.getElementById("nextPage") as HTMLButtonElement;
     nextButton.disabled = false;
     const prevButton = document.getElementById("prevPage") as HTMLButtonElement;
     prevButton.disabled = false;
-
     const carName = await fetchCarNameById(winner.id);
     const showCurWin = document.createElement("div");
     showCurWin.classList.add("currentWin");
     showCurWin.textContent = `The winner is: ${carName} (${winner.res} seconds!)`;
     const carCont = document.getElementById("car-container");
     carCont?.appendChild(showCurWin);
-
     await createWinnerRecord(winner);
-
     const stopButtons = document.querySelectorAll(".stop-btn",) as NodeListOf<HTMLButtonElement>;
-    
+
     stopButtons.forEach((button) => {
         button.disabled = true;
     });

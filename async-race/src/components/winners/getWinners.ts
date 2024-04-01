@@ -1,47 +1,53 @@
-export async function getWinners() {
+// export async function getWinners(page:number, sort: string, order: string) {
+//     try {
+//         // const response = await fetch('http://127.0.0.1:3000/winners');
+//         // let page = 1;
+//         // const response = await fetch(`http://127.0.0.1:3000/winners?_page=${page}&_limit=10`);
+//         const response = await fetch(`http://127.0.0.1:3000/winners?_page=${page}&_limit=10&_sort=${sort}&_order=${order}`);
+
+
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const data = await response.json();
+//         displayWinners(data);
+
+//         const totalCount = response.headers.get('X-Total-Count');
+//         if (totalCount) {
+//             // console.log(`Total number of records: ${totalCount}`);
+//         }
+//     } catch (error) {
+//         console.log('Failed to fetch winners data:', error);
+//     }
+// }
+
+export async function getWinners(page: number, sort: string = '', order: string = '') {
     try {
-        const response = await fetch('http://127.0.0.1:3000/winners');
+        // Создаем строку запроса с параметрами сортировки, если они указаны
+        let queryParams = `_page=${page}&_limit=10`;
+        if (sort) {
+            queryParams += `&_sort=${sort}`;
+        }
+        if (order) {
+            queryParams += `&_order=${order}`;
+        }
+
+        const response = await fetch(`http://127.0.0.1:3000/winners?${queryParams}`);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Winners data:', data);
-
         displayWinners(data);
-
 
         const totalCount = response.headers.get('X-Total-Count');
         if (totalCount) {
-            console.log(`Total number of records: ${totalCount}`);
+            // console.log(`Total number of records: ${totalCount}`);
         }
     } catch (error) {
-        console.error('Failed to fetch winners data:', error);
+        console.log('Failed to fetch winners data:', error);
     }
 }
-
-
-// function displayWinners(winners: any[]) {
-//     const modalContent = document.querySelector('.modal-content');
-//     if (!modalContent) {
-//         console.error('Element with class "modal-content" not found');
-//         return;
-//     }
-
-//     modalContent.innerHTML = '';
-
-//     const h2 = document.createElement('h2');
-//     h2.textContent = 'Winners';
-//     modalContent.appendChild(h2);
-
-//     const ul = document.createElement('ul');
-//     winners.forEach(winner => {
-//         const li = document.createElement('li');
-//         li.textContent = `ID: ${winner.id}, Wins: ${winner.wins}, Time: ${winner.time} seconds`;
-//         ul.appendChild(li);
-//     });
-//     modalContent.appendChild(ul);
-// }
-
 
 async function fetchCarDetailsById(id: number): Promise<{ name: string, color: string }> {
     try {
@@ -58,35 +64,6 @@ async function fetchCarDetailsById(id: number): Promise<{ name: string, color: s
 }
 
 
-// async function displayWinners(winners: any[]) {
-//     const modalContent = document.querySelector('.modal-content');
-//     if (!modalContent) {
-//         console.error('Element with class "modal-content" not found');
-//         return;
-//     }
-
-//     modalContent.innerHTML = '';
-
-//     const h2 = document.createElement('h2');
-//     h2.textContent = 'Winners';
-//     modalContent.appendChild(h2);
-
-//     const ul = document.createElement('ul');
-//     for (const winner of winners) {
-//         const li = document.createElement('li');
-//         try {
-//             const { name, color } = await fetchCarDetailsById(winner.id);
-//             li.textContent = `ID: ${winner.id}, Name: ${name}, Color: ${color}, Wins: ${winner.wins}, Time: ${winner.time} seconds`;
-//         } catch (error) {
-//             console.error('Failed to fetch car details for winner:', error);
-//             li.textContent = `ID: ${winner.id}, Wins: ${winner.wins}, Time: ${winner.time} seconds (Car details not available)`;
-//         }
-//         ul.appendChild(li);
-//     }
-//     modalContent.appendChild(ul);
-// }
-
-
 async function displayWinners(winners: any[]) {
     const modalContent = document.querySelector('.modal-content');
     if (!modalContent) {
@@ -94,7 +71,6 @@ async function displayWinners(winners: any[]) {
         return;
     }
 
-    // Очищаем содержимое элемента перед добавлением новых данных
     modalContent.innerHTML = '';
 
     const header = document.createElement('h2');
@@ -149,9 +125,7 @@ async function displayWinners(winners: any[]) {
     timesCol.classList.add("column");
     h5.appendChild(timesCol);
 
-    // winHeader.textContent = 'Number Car Name Wins Best Time';
     modalContent.appendChild(winHeader);
-
 
 
     const ul = document.createElement('ul');

@@ -29,11 +29,8 @@ export default function winnersView() {
   }
   const h2 = document.createElement("h2");
   h2.textContent = "Winners";
-  const p = document.createElement("p");
-  p.textContent = "Some text";
 
   modalContent.appendChild(h2);
-  modalContent.appendChild(p);
   modal.appendChild(modalContent);
 
   document.body.appendChild(modal);
@@ -51,12 +48,87 @@ export default function winnersView() {
     }
   }
 
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      closeModal();
-    }
+  // window.onclick = function (event) {
+  //   if (event.target == modal) {
+  //     closeModal();
+  //   }
+  // };
+
+  getWinners(1);
+
+  let currentPage = 1;
+
+  const pagButtons = document.createElement('div');
+  pagButtons.classList.add("pagButtons");
+  modal.appendChild(pagButtons);
+
+  const sortButtons = document.createElement('div');
+  sortButtons.classList.add("pagButtons");
+  modal.appendChild(sortButtons);
+
+
+  const prevButton = document.createElement('button');
+  prevButton.textContent = 'Previous';
+  prevButton.classList.add("button");
+  prevButton.onclick = () => {
+      if (currentPage > 1) {
+          currentPage--;
+          getWinners(currentPage);
+      }
   };
 
+  const nextButton = document.createElement('button');
+  nextButton.textContent = 'Next';
+  nextButton.classList.add("button");
+
+  nextButton.onclick = () => {
+    {      currentPage++;
+          getWinners(currentPage);
+      }
+  };
+
+  pagButtons.appendChild(prevButton);
+  pagButtons.appendChild(nextButton);
+
+
+  const sortByWinsAButton = document.createElement('button');
+  sortByWinsAButton.textContent = 'sort By Wins (Acs)';
+  sortByWinsAButton.classList.add("button");
+
+  const sortByWinsDButton = document.createElement('button');
+  sortByWinsDButton.textContent = 'sort By Wins (Des)';
+  sortByWinsDButton.classList.add("button");
+
+  const sortByTimeAButton = document.createElement('button');
+  sortByTimeAButton.textContent = 'sort By Time (Acs)';
+  sortByTimeAButton.classList.add("button");
+
+  const sortByTimeDButton = document.createElement('button');
+  sortByTimeDButton.textContent = 'sort By Time (Des)';
+  sortByTimeDButton.classList.add("button");
+
+  sortButtons.appendChild(sortByWinsAButton);
+  sortButtons.appendChild(sortByWinsDButton);
+  sortButtons.appendChild(sortByTimeAButton);
+  sortButtons.appendChild(sortByTimeDButton);
+
+sortByWinsAButton.onclick = () => {
+  getWinners(currentPage, 'wins', 'ASC');
+};
+
+sortByWinsDButton.onclick = () => {
+  getWinners(currentPage, 'wins', 'DESC');
+};
+
+sortByTimeAButton.onclick = () => {
+  getWinners(currentPage, 'time', 'ASC');
+};
+
+sortByTimeDButton.onclick = () => {
+  getWinners(currentPage, 'time', 'DESC');
+};
+
+
   showModal();
-  getWinners();
+  // getWinners(1);
 }
