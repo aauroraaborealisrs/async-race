@@ -1,18 +1,20 @@
 import { Pages } from "./updateGarageHeaderWithCarCount";
 
-const nextPageButton = document.getElementById("nextPage") as HTMLButtonElement;
-const previousPageButton = document.getElementById(
-  "prevPage",
-) as HTMLButtonElement;
-
 async function getTotalPages(): Promise<number> {
   const totalPages = await Pages();
   return totalPages;
 }
 
 const totalPages = getTotalPages();
+
 export function buttonsState(currentPg: number) {
-  if (currentPg === 1) {
+
+  const nextPageButton = document.getElementById("nextPage") as HTMLButtonElement;
+const previousPageButton = document.getElementById(
+  "prevPage",
+) as HTMLButtonElement;
+
+  if (currentPg == 1) {
     if (previousPageButton) {
       previousPageButton.disabled = true;
     }

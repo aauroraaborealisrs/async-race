@@ -159,45 +159,52 @@ document.addEventListener("DOMContentLoaded", () => {
   startRaceListener();
   const resetButton = document.getElementById("reset-btn");
   resetButton?.addEventListener("click", resetButtonHandler);
-});
 
-let currentPg = 1;
+  let currentPg = 1;
+  const previousPageButton = document.getElementById(
+    "prevPage",
+  ) as HTMLButtonElement;
 
-function curPageUpdate(currentPg: number) {
-  const curPageDisplay = document.getElementById("cur-page");
-  if (curPageDisplay) {
-    curPageDisplay.textContent = `Page № ${currentPg}`;
+  previousPageButton.disabled = true;
+  
+  function curPageUpdate(currentPg: number) {
+    const curPageDisplay = document.getElementById("cur-page");
+    if (curPageDisplay) {
+      curPageDisplay.textContent = `Page № ${currentPg}`;
+    }
   }
-}
-const nextPageButton = document.getElementById("nextPage") as HTMLButtonElement;
-if (nextPageButton) {
-  nextPageButton.addEventListener("click", () => {
-    currentPg++;
-    GarageView.fetchCarsAndRender(currentPg);
-    curPageUpdate(currentPg);
-    buttonsState(currentPg);
-    const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
-    raceButton.disabled = false;
-  });
-} else {
-  console.log('Element with ID "nextPage" not found');
-}
+  const nextPageButton = document.getElementById("nextPage") as HTMLButtonElement;
+  if (nextPageButton) {
+    nextPageButton.addEventListener("click", () => {
+      currentPg++;
+      GarageView.fetchCarsAndRender(currentPg);
+      curPageUpdate(currentPg);
+      buttonsState(currentPg);
+      const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
+      raceButton.disabled = false;
+      previousPageButton.disabled = false;
 
-const previousPageButton = document.getElementById(
-  "prevPage",
-) as HTMLButtonElement;
-if (previousPageButton) {
-  previousPageButton.addEventListener("click", () => {
-    currentPg--;
-    GarageView.fetchCarsAndRender(currentPg);
-    curPageUpdate(currentPg);
-    buttonsState(currentPg);
-    const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
-    raceButton.disabled = false;
-  });
-} else {
-  console.log('Element with ID "nextPage" not found');
-}
-
-curPageUpdate(currentPg);
-buttonsState(currentPg);
+    });
+  } else {
+    console.log('Element with ID "nextPage" not found');
+  }
+  
+  // const previousPageButton = document.getElementById(
+  //   "prevPage",
+  // ) as HTMLButtonElement;
+  if (previousPageButton) {
+    previousPageButton.addEventListener("click", () => {
+      currentPg--;
+      GarageView.fetchCarsAndRender(currentPg);
+      curPageUpdate(currentPg);
+      buttonsState(currentPg);
+      const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
+      raceButton.disabled = false;
+    });
+  } else {
+    console.log('Element with ID "nextPage" not found');
+  }
+  
+  curPageUpdate(currentPg);
+  buttonsState(currentPg);
+});
