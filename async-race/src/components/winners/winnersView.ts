@@ -1,4 +1,5 @@
 import "./winners.css";
+import { getWinners } from "./getWinners";
 
 export default function winnersView() {
   const modal = document.createElement("div");
@@ -57,4 +58,5 @@ export default function winnersView() {
   };
 
   showModal();
+  getWinners();
 }

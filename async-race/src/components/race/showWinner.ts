@@ -7,17 +7,23 @@ async function fetchCarNameById(id: number): Promise<string> {
     try {
         const response = await fetch(`http://127.0.0.1:3000/garage/${id}`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.log(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         return data.name;
     } catch (error) {
-        console.error('Fetch failed:', error);
+        console.log('Fetch failed:', error);
         throw error; 
     }
 }
 
 export async function showWinner(winner: WinnerCandidate) {
+    
+    const nextButton = document.getElementById("nextPage") as HTMLButtonElement;
+    nextButton.disabled = false;
+    const prevButton = document.getElementById("prevPage") as HTMLButtonElement;
+    prevButton.disabled = false;
+
     const carName = await fetchCarNameById(winner.id);
     const showCurWin = document.createElement("div");
     showCurWin.classList.add("currentWin");
@@ -37,31 +43,47 @@ export async function showWinner(winner: WinnerCandidate) {
 
 async function createWinnerRecord(winner: WinnerCandidate) {
     try {
-        // Попытка получить текущую запись о победителе с данным ID
         const response = await fetch(`http://127.0.0.1:3000/winners/${winner.id}`);
         let data;
 
         if (response.ok) {
-            // Если запись существует, обновить её
             data = await response.json();
-            const updatedWins = data.wins + 1;
-            const updateResponse = await fetch(`http://127.0.0.1:3000/winners/${winner.id}`, {
-                method: 'PUT', 
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: winner.id,
-                    wins: updatedWins,
-                    time: winner.res,
-                }),
-            });
+            const currentTime = data.time;
 
-            if (!updateResponse.ok) {
-                console.log(`HTTP error! status: ${updateResponse.status}`);
+            if (winner.res < currentTime) {
+                const updateResponse = await fetch(`http://127.0.0.1:3000/winners/${winner.id}`, {
+                    method: 'PUT', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: winner.id,
+                        wins: data.wins + 1,
+                        time: winner.res, 
+                    }),
+                });
+
+                if (!updateResponse.ok) {
+                    console.log(`HTTP error! status: ${updateResponse.status}`);
+                }
+            } else {
+                const updateResponse = await fetch(`http://127.0.0.1:3000/winners/${winner.id}`, {
+                    method: 'PUT', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: winner.id,
+                        wins: data.wins + 1, 
+                        time: currentTime, 
+                    }),
+                });
+
+                if (!updateResponse.ok) {
+                    console.log(`HTTP error! status: ${updateResponse.status}`);
+                }
             }
         } else {
-            // Если запись не существует, создать новую
             const createResponse = await fetch('http://127.0.0.1:3000/winners', {
                 method: 'POST',
                 headers: {
@@ -80,6 +102,6 @@ async function createWinnerRecord(winner: WinnerCandidate) {
         }
 
     } catch (error) {
-        console.error('Failed to update or create winner record:', error);
+        console.log('Failed to update or create winner record:', error);
     }
 }

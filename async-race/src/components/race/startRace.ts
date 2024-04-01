@@ -20,6 +20,12 @@ async function startRace() {
   const raceButton = document.getElementById("race-btn") as HTMLButtonElement;
   raceButton.disabled = true;
 
+  const nextButton = document.getElementById("nextPage") as HTMLButtonElement;
+  nextButton.disabled = true;
+
+  const prevButton = document.getElementById("prevPage") as HTMLButtonElement;
+  prevButton.disabled = true;
+
   const startButtons = document.querySelectorAll(
     ".start-btn",
   ) as NodeListOf<HTMLButtonElement>;

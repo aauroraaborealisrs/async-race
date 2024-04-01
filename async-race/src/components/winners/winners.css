@@ -34,18 +34,55 @@
 }
 
 .currentWin {
-    position: fixed; /* Фиксированное позиционирование относительно окна просмотра */
-    top: 50%; /* Выравнивание по верхнему краю относительно центра экрана */
-    left: 50%; /* Выравнивание по левому краю относительно центра экрана */
-    transform: translate(-50%, -50%); /* Смещение элемента на половину его собственной ширины и высоты */
-    display: flex; /* Использование flexbox для центрирования */
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center; /* Центрирование по вертикали */
-    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-    color: white; /* Белый цвет текста */
-    z-index: 9999; /* Высокий z-index для наложения на другие элементы */
-    padding: 20px; /* Добавление отступов */
-    box-sizing: border-box; /* Учет отступов в ширине и высоте */
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white; 
+    /* z-index: 3;  */
+    padding: 20px;
+    box-sizing: border-box; 
     height: 200px;
     width: 400px;
+    /* background-image: url(../view/img/machine.svg); */
+}
+
+.winCarImage{
+    mask-image: url(../view/img/machine.svg);
+    mask-size: 100% 100%;
+    width: 100px;
+    height: 30px;
+    /* padding-bottom: 5px; */
+}
+
+.win-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.winHead{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.centrize{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
 }

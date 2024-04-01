@@ -97,6 +97,6 @@ let winnerSend = {
     return winnerSend;
 
   } catch (error) {
-    console.log("There was a problem with your fetch operation:", error);
+    // console.log("There was a problem with your fetch operation:", error);
   }
 }
